@@ -1,0 +1,899 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1,minimal-ui">
+    <meta name="x5-page-mode" content="app">
+
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+    <meta name="description" content="">
+    <meta name="author" content="申俊">
+    <title>湖北文理学院</title>
+
+	<script src="{{ url_for('static',filename='js/jquery-2.1.1.min.js') }}"></script>
+    <script src="{{ url_for('static',filename='js/swiper.min.js') }}"></script>
+	<script>
+	 $(window).load(function(){
+             $(".loading").fadeOut()
+            })
+	</script>
+
+    <script src="https://cdn.bootcss.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Bootstrap core CSS -->
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+
+
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/common.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static',filename='css/map.css') }}">
+
+
+        <!-- Custom styles for this template -->
+<!--    <link href="starter-template.css" rel="stylesheet">-->
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://cdn.bootcss.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://cdn.bootcss.com/respond.js/1.4.2/respond.min.js"></script>
+
+    <![endif]-->
+
+</head>
+<body>
+
+	<div class="loading">
+      <div class="loadbox">
+          <img src="{{ url_for('static',filename='picture/loading.gif') }}">
+          页面加载中...
+      </div>
+    </div>
+
+
+        <!--导航-->
+<nav class="navbar navbar-default navbar-fixed-top" style="background:#F8F8FF">
+  <div class="container">
+      <a class="navbar-brand fl" >{{name_id}}学生分布</a>
+   <!-- Button trigger modal -->
+    <button type="button" class="btn btn-default navbar-btn fr"
+            data-toggle="modal" data-target="#myModal">
+      学院
+    </button>
+  </div>
+</nav>
+
+
+
+<!-- 学院选择Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="myModalLabel">学院选择</h4>
+      </div>
+      <div class="modal-body"  style="text-align:center;margin:0 auto">
+          <div class="btn-group-vertical " style="margin-right:40px">
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'all')  }}'">全校</button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'zihuan')  }}'">资环学院</button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'tujian')  }}'">土建学院 </button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'yinyue')  }}'">音乐学院 </button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'jisuanji')  }}'">计算机学院 </button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'meishu')  }}'">美术学院 </button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'yixue')  }}'">医学院 </button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'jixie')  }}'">机械学院 </button>
+            <button type="button" class="btn btn-default " onclick="window.location.href = '{{url_for('college', name_id=  'jiaoyu')  }}'">教育学院 </button>
+          </div>
+            <div class="btn-group-vertical ">
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'wudian')  }}'">物电学院 </button>
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'wenchuan')  }}'">文传学院 </button>
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'jinguan')  }}'">经管学院 </button>
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'shihua')  }}'">食化学院 </button>
+                 <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'waiguoyu')  }}'">外国语学院 </button>
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'jiaotong')  }}'">交通学院 </button>
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'shutong')  }}'">数统学院 </button>
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'tiyu')  }}'">体育学院 </button>
+                <button type="button" class="btn btn-default" onclick="window.location.href = '{{url_for('college', name_id=  'zhengfa')  }}'">政法学院 </button>
+            </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 湖北城市Modal -->
+<div class="modal fade text-center" id="hbModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+  <div class="modal-dialog modal-lg" role="document" style="display: inline-block; width: auto;">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4 class="modal-title" id="hbModalLabel">{{name_id}}湖北详情</h4>
+      </div>
+      <div class="modal-body"  style="text-align:center;margin:0 auto;">
+          <div  style="width:295px;height:150px;">
+              <div> 湖北省内总人数：{{hubei_number}}</div>
+              <div class="">
+                <ul style="display:table;margin:0 auto;text-align:center;padding:0">
+                    <li style="float:left;">
+                        <img src="{{ url_for('static',filename='picture/num1.png') }}" alt=""
+                             style="display:block; margin:20px auto  5px auto;height:25x;width:25px">
+                        <span style="color:green;font-size: 16px">{{hubei_top1_name}}</span><p>{{hubei_top1_value}}</p>
+                    </li>
+                    <li style="float:left;margin-left:45px">
+                        <img src="{{ url_for('static',filename='picture/num2.png') }}" alt=""
+                             style="display:block; margin:20px auto  5px auto;height:25x;width:25px">
+                        <span style="color:#FF9900;font-size: 16px">{{hubei_top2_name}}</span><p>{{hubei_top2_value}}</p>
+                    </li>
+                    <li style="float:left;margin-left:45px">
+                        <img src="{{ url_for('static',filename='picture/num3.png') }}" alt=""
+                             style="display:block; margin:20px auto  5px auto;height:25x;width:25px">
+                        <span style="color:blue;font-size: 16px">{{hubei_top3_name}}</span><p>{{hubei_top3_value}}</p>
+                    </li>
+                </ul>
+              </div>
+
+          </div>
+<!--          地图-->
+          <div  id="hbmap" style="width:295px;height:230px;margin-top:-20px;"></div>
+
+<!--          数据-->
+          <div id="mapdata" style="display:none;margin-top:-30px;height:240px; overflow:scroll;">
+              <table class="table table-hover" >
+                <caption style="text-align:center;margin:0 auto;">数据视图</caption>
+                <tbody>
+                {% for city in hubei_city2 %}
+                    <tr>
+                        <td style="">{{city.name}}</td>
+                        <td style="">{{city.value}}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                </table>
+        </div>
+
+<!--          切换键-->
+          <div class="btn-group" role="group" aria-label="..." style="float:center;margin-top:20px">
+              <button type="button" class="btn btn-default" onclick="show_map()">地图</button>
+              <button type="button" class="btn btn-default" onclick="show_data()">数据</button>
+          </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="data">
+    <div class="data-content">
+        <!--        中间-->
+        <div class="con-center" >
+            <div class="cen-top map" id="map"></div>
+            <div style="text-align:center;color:black;font-size:12px">  湖北文理学院{{name_id}}分布</div>
+        </div>
+        <!--        左边-->
+        <div class="con-left">
+            <div class="left-top">
+                <div class="info boxstyle">
+                    <div class="title">实时统计</div>
+                    <div class="info-main">
+						<ul>
+							<li><img src="{{ url_for('static',filename='picture/info-img-1.png') }}" alt="">
+                                <span>总人数</span><p>{{total_number}}</p>
+                            </li>
+							<li><img src="{{ url_for('static',filename='picture/info-img-2.png') }}" alt="">
+                                <span>省内人数</span><p>{{hubei_number}}</p>
+                            </li>
+							<li><img src="{{ url_for('static',filename='picture/info-img-3.png') }}" alt="">
+                                <span>省外人数</span><p>{{other_number}}</p>
+                            </li>
+							<li><img src="{{ url_for('static',filename='picture/info-img-4.png') }}" alt="">
+                                <span>省内占比(%)</span><p>{{ratio}}</p>
+                            </li>
+						</ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--       右边-->
+        <div class="con-right">
+<!--            <div class="right-center boxstyle">-->
+<!--                <div class="title">人数最多市TOP5</div>-->
+<!--                <div id="echarts_4" class="charts"></div>-->
+<!--            </div>-->
+            <div class="right-center boxstyle">
+                <div class="title">人数最多省份TOP5</div>
+                <div id="echarts_5" class="charts"></div>
+            </div>
+            <div class="right-center boxstyle">
+                    <div class="title">健康打卡</div>
+                    <div id="echarts_1" class="charts"></div>
+            </div>
+            <div class="right-center boxstyle">
+                <div class="title">返校人数</div>
+                <div id="echarts_3" class="charts"></div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>
+</body>
+
+<!--<script src="js/echarts.min.js"></script>-->
+<!--<script src="js/china.js"></script>-->
+<!--<script src="js/echarts.js"></script>-->
+
+<script src="{{ url_for('static',filename='js/echarts.min.js') }}"></script>
+<script src="{{ url_for('static',filename='js/china.js') }}"></script>
+<script src="{{ url_for('static',filename='province/hubei.js') }}"></script>
+
+<script>
+function show_map(){
+    document.getElementById("hbmap").style.display="block";
+    document.getElementById("mapdata").style.display="none";
+};
+function show_data()
+{
+    document.getElementById("mapdata").style.display="block";
+    document.getElementById("hbmap").style.display="none";
+}
+</script>
+
+
+<script>
+    echarts_hbmap()
+       function echarts_hbmap() {
+        var myChart = echarts.init(document.getElementById('hbmap'));
+        var option = {
+		    tooltip: {
+	            trigger: 'item',
+	            formatter:function(params){
+	                var res = "";
+	                res+=params["data"].name + '</br>';
+	                res+='人数' +' : '+params['data'].value+'</br>';
+					return res;
+	            }
+    		},
+    		toolbox: {
+               show : false,
+               orient:"horizontal",
+               itemSize:15,
+               itemGap:10,
+               showTitle:true,
+               feature : {
+                mark : {                                 // '辅助线开关'
+                    show: true
+                },
+                dataView : {                            //数据视图工具，可以展现当前图表所用的数据，编辑后可以动态更新
+                    show: true,                         //是否显示该工具。
+                    title:"数据视图",
+                    readOnly: true,                    //是否不可编辑（只读）
+                    lang: ['数据视图', '关闭', '刷新'],  //数据视图上有三个话术，默认是['数据视图', '关闭', '刷新']
+                    backgroundColor:"white",             //数据视图浮层背景色。
+                    textareaColor:"white",               //数据视图浮层文本输入区背景色
+                    textareaBorderColor:"#333",         //数据视图浮层文本输入区边框颜色
+                    textColor:"black",                    //文本颜色。
+                    buttonColor:"#c23531",              //按钮颜色。
+                    buttonTextColor:"#fff",             //按钮文本颜色。
+                }
+            },
+            zlevel:0,                                   //所属图形的Canvas分层，zlevel 大的 Canvas 会放在 zlevel 小的 Canvas 的上面
+            z:0,                                         //所属组件的z分层，z值小的图形会被z值大的图形覆盖
+            left:"right",                              //组件离容器左侧的距离,'left', 'center', 'right','20%'
+            width:"auto",                               //图例宽度
+            height:"auto",                              //图例高度
+           },
+    		visualMap: {
+    		        type: 'piecewise',
+		            min: 0,
+		            max: 1500,
+		            splitNumber: 2,
+                    pieces: [
+                        {min: 200},
+                        {min: 100, max: 200},
+                        {max: 100}
+                    ],
+		            textStyle: { // 文字颜色
+                        color: 'black'
+                    },
+		            realtime: false,
+		            calculable: true,
+		            inRange: {
+		                color: ['#F8F8FF','#F5F5DC', '#FFE4C4', '#D2691E']
+		            },
+		            orient:"horizontal",
+		            left:"center",
+		            bottom:"0%",
+   			},
+
+    		series:[
+    			{
+    				name: '湖北省',
+           	 		type: 'map',//type必须声明为 map 说明该图标为echarts 中map类型
+           	 		map: '湖北', //这里需要特别注意。如果是中国地图，map值为china，如果为各省市则为中文。这里用北京
+           	 		aspectScale: 0.75, //长宽比. default: 0.75
+           	 		zoom: 1.2,
+           	 		roam: false,  //静止拖动
+           	 		//roam: true,
+	                itemStyle: { // 地图区域的多边形 图形样式。
+                        areaColor: '#0c1c30', // 地区默认颜色
+                        borderColor: '#FFA500', //片区边框颜色
+                        borderWidth:1, // 边框描绘
+                        emphasis: { // 高亮状态下的多边形和标签样式
+                          areaColor: '#32CD32', // 高亮区域背景颜色
+                          shadowBlur: 20,
+                          shadowColor: 'rgba(255, 0, 0, 0.5)'
+                        }
+                    },
+        			data: {{hubei_city|tojson}},
+        			label:{
+        			    normal:{
+        			        show:true,
+        			        formatter:function(val){
+        			            var area_content =  '{a|' + val.name + '}' + '-' + '{b|' + val.data.value + '}';
+							    return area_content.split("-").join("\n");
+        			        },
+        			        rich: {
+                                a: {
+                                    color: 'black',
+                                    fontSize: 8,
+
+                                },
+                                b: {
+                                    color: 'black',
+                                    fontFamily: 'Microsoft YaHei',
+                                    fontSize: 8,
+                                }
+                            },
+        			    },
+        			    emphasis: {show: true}
+        			},
+    			}
+    		]
+	    };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option,true);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    }
+
+</script>
+
+
+<script>
+    echarts_map()
+       function echarts_map() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('map'));
+        var option = {
+		    tooltip: {
+	            trigger: 'item',
+	            formatter:function(params){
+	                if(params["data"].name != "湖北")
+	                {
+                        var res = "";
+                        res+=params["data"].name + '</br>';
+                        res+='人数' +' : '+params['data'].value+'</br>';
+                        return res;
+	                }
+	            }
+    		},
+    		visualMap: {
+    		        type: 'piecewise',
+		            min: 0,
+		            max: 1500,
+		            splitNumber: 3,
+                    pieces: [
+                        {min: 400},
+                        {min: 100, max: 400},
+                        {min: 50, max: 100},
+                        {max: 50}
+                    ],
+		            textStyle: { // 文字颜色
+                        color: 'black'
+                    },
+		            realtime: false,
+		            calculable: true,
+		            inRange: {
+		                color: ['#F8F8FF','#F5F5DC', '#FFE4C4', '#D2691E']
+		            },
+		            orient:"horizontal",
+		            left:"center",
+   			},
+
+    		series:[
+    			{
+    				name: '中国',
+           	 		type: 'map',//type必须声明为 map 说明该图标为echarts 中map类型
+           	 		map: 'china', //这里需要特别注意。如果是中国地图，map值为china，如果为各省市则为中文。这里用北京
+           	 		aspectScale: 0.75, //长宽比. default: 0.75
+           	 		zoom: 1.26,
+           	 		roam: false,  //静止拖动
+           	 		//roam: true,
+	                itemStyle: { // 地图区域的多边形 图形样式。
+                        areaColor: '#0c1c30', // 地区默认颜色
+                        borderColor: '#FFA500', //片区边框颜色
+                        borderWidth:1, // 边框描绘
+                        emphasis: { // 高亮状态下的多边形和标签样式
+                          areaColor: '#32CD32', // 高亮区域背景颜色
+                          shadowBlur: 20,
+                          shadowColor: 'rgba(255, 0, 0, 0.5)'
+                        }
+                    },
+        			data: {{province_data | tojson}},
+        			label:{
+        			    normal:{
+        			        show:true,
+        			        formatter:function(val){
+        			            var area_content =  '{a|' + val.name + '}' + '-' + '{b|' + val.data.value + '}';
+							    return area_content.split("-").join("\n");
+        			        },
+        			        rich: {
+                                a: {
+                                    color: 'black',
+                                    fontSize: 8,
+
+                                },
+                                b: {
+                                    color: 'black',
+                                    fontFamily: 'Microsoft YaHei',
+                                    fontSize: 8,
+                                }
+                            },
+        			    },
+        			    emphasis: {show: true}
+        			},
+    			}
+    		]
+	    };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option,true);
+        myChart.on('click', function(params){
+			if(params.name == "湖北"){
+                $('#hbModal').modal();
+			}
+		});
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    }
+
+</script>
+
+
+<script>
+echarts_city_top5()
+    function echarts_city_top5() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echarts_4'));
+
+        option = {
+
+            tooltip : {
+                trigger: 'item',
+                formatter: "{b}: <br/>  {c} ({d}%)"
+            },
+
+            toolbox: {
+                show : false,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {
+                        show: true,
+                        type: ['pie', 'funnel']
+                    },
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+            calculable : true,
+            series : [
+
+                {
+                    name:'排名',
+                    type:'pie',
+                    color: ['#00FF00', "#7B68EE", '#40E0D0', '#FF7F50', '#FFD700'],
+                    radius : [10, 90],
+                    center : ['50%', '50%'],
+                    roseType : 'area',
+                    data:{{city_top5 | tojson}}
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    }
+
+</script>
+<script>
+echarts_province_top5();
+        function echarts_province_top5() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echarts_5'));
+
+        var xData = function() {
+            var data = {{province_top5[0]  | tojson}};
+            return data;
+        }();
+
+        var data = {{province_top5[1]  | tojson}};
+
+        option = {
+            //backgroundColor: "#141f56",
+
+            tooltip: {
+                show: "true",
+                trigger: 'item',
+                backgroundColor: 'rgba(0,0,0,0.4)', // 背景
+                padding: [38, 50], //内边距
+                // extraCssText: 'box-shadow: 0 0 3px rgba(255, 255, 255, 0.4);', //添加阴影
+                formatter: function(params) {
+                    if (params.seriesName != "") {
+                        return params.name + ' ：  ' + params.value + ' 人';
+                    }
+                },
+
+            },
+            grid: {
+                borderWidth: 0,
+                top: 20,
+                bottom: 35,
+                left:60,
+                right:10,
+                textStyle: {
+                    color: "#FFA500"
+                }
+            },
+            xAxis: [{
+                type: 'category',
+
+                axisTick: {
+                    show: false
+                },
+
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                         color:'rgba(255,255,255,0.5)',
+                    }
+                },
+                axisLabel: {
+                    inside: false,
+                    textStyle: {
+                        color: '696969',
+                        fontWeight: 'normal',
+                        fontSize: '14',
+                    },
+                    // formatter:function(val){
+                    //     return val.split("").join("\n")
+                    // },
+                },
+                data: xData,
+            }, {
+                type: 'category',
+                axisLine: {
+                    show: false
+                },
+                axisTick: {
+                    show: false
+                },
+                axisLabel: {
+                    show: false
+                },
+                splitArea: {
+                    show: false
+                },
+                splitLine: {
+                    show: false
+                },
+                data: xData,
+            }],
+            yAxis: {
+				min:10,
+                type: 'value',
+                axisTick: {
+                    show: false
+                },
+                axisLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'rgba(255,255,255,0.2)',
+                    }
+                },
+                splitLine: {
+                    show: true,
+                    lineStyle: {
+                        color: 'rgba(220,220,220,0.2)',
+                    }
+                },
+                axisLabel: {
+                    textStyle: {
+                        color: '#808080',
+                        fontWeight: 'normal',
+                        fontSize: '12',
+                    },
+                    formatter: '{value}',
+                },
+            },
+            series: [{
+                type: 'bar',
+                itemStyle: {
+                    normal: {
+                        show: true,
+                        color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                            offset: 0,
+                            color: '#FF4500'
+                        }, {
+                            offset: 1,
+                            color: '#FF7F50'
+                        }]),
+                        barBorderRadius: 5,
+                        borderWidth: 0,
+                    },
+                    emphasis: {
+                        shadowBlur: 15,
+                        shadowColor: 'rgba(105,123, 214, 0.7)'
+                    }
+                },
+                zlevel: 2,
+                barWidth: '50%',
+                data: data,
+            },
+                {
+                    name: '',
+                    type: 'bar',
+                    xAxisIndex: 1,
+                    zlevel: 1,
+                    itemStyle: {
+                        normal: {
+                            color: 'transparent',
+                            borderWidth: 0,
+                            shadowBlur: {
+                                shadowColor: 'rgba(255,255,255,0.31)',
+                                shadowBlur: 10,
+                                shadowOffsetX: 0,
+                                shadowOffsetY: 2,
+                            },
+                        }
+                    },
+                    barWidth: '20%',
+                    data: [30, 30, 30, 30, 30]
+                }
+            ]
+        }
+
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    }
+</script>
+
+<script>
+echarts_health();
+        function echarts_health() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echarts_1'));
+        option = {
+            tooltip: {
+                formatter: '{a} <br/>{b} : {c}%'
+            },
+//            toolbox: {
+//                feature: {
+//                    restore: {},
+//                    saveAsImage: {}
+//                }
+//            },
+            series: [
+                {
+                    name: '打卡率',
+                    type: 'gauge',
+                    detail:
+                    {
+                        formatter: '{value}%',
+                        textStyle:{
+                            fontSize: 25,//字体大小
+                            color: 'black'//字体颜色
+                        },
+                    },
+                     title : {               //设置仪表盘中间显示文字样式
+                        textStyle: {       // 其余属性默认使用全局文本样式，详见TEXTSTYLE
+                            fontSize: 16,
+                            color:"black"
+                        }
+                    },
+                    data: [{value: {{health_punch_rate}},
+                     name: '完成率'}
+                     ],
+                    splitLine : {           //分割线样式（及10、20等长线样式）
+                           length : 15,
+                           lineStyle: {            // 分隔线样式。
+                            color: "#eee",              //线的颜色,默认 #eee。
+                            opacity: 1,                 //图形透明度。支持从 0 到 1 的数字，为 0 时不绘制该图形。
+                            width: 2,                   //线度,默认 2。
+                            type: "solid",              //线的类型,默认 solid。 此外还有 dashed,dotted
+                            shadowBlur: 10,             //(发光效果)图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
+                            shadowColor: "#fff",        //阴影颜色。支持的格式同color。
+                        }
+                    },
+                    pointer : { //指针样式
+                      length: '80%'
+                    },
+                    axisLine:{
+                          show : true,// 是否显示仪表盘轴线(轮廓线),默认 true。
+                          lineStyle : { // 属性lineStyle控制线条样式
+                            shadowBlur: 10,             //(发光效果)图形阴影的模糊大小。该属性配合 shadowColor,shadowOffsetX, shadowOffsetY 一起设置图形的阴影效果。
+                            shadowColor: "#fff",        //阴影颜色。支持的格式同color。
+                               color : [ //表盘颜色
+                                   [ 0.5, "#DA462C" ],//0-50%处的颜色
+                                 [ 0.7, "#FF9618" ],//51%-70%处的颜色
+                                 [ 0.9, "#FFED44" ],//70%-90%处的颜色
+                                 [ 1,"#20AE51" ]//90%-100%处的颜色
+                               ],
+                              width : 15//表盘宽度
+                          }
+                    },
+                     axisLabel : { //文字样式（及“10”、“20”等文字样式）
+                      color : "black",
+                      distance : 5 //文字离表盘的距离
+                  },
+                }
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    }
+
+
+
+</script>
+
+<script>
+echarts_back_school();
+    function echarts_back_school() {
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('echarts_3'));
+
+        option = {
+
+            tooltip : {
+                trigger: 'axis'
+            },
+
+            grid: {
+                left: '3%',
+                right: '5%',
+                top:'8%',
+                bottom: '5%',
+                containLabel: true
+            },
+            color:['#a4d8cc','#25f3e6'],
+            toolbox: {
+                show : false,
+                feature : {
+                    mark : {show: true},
+                    dataView : {show: true, readOnly: false},
+                    magicType : {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                    restore : {show: true},
+                    saveAsImage : {show: true}
+                }
+            },
+
+            calculable : true,
+            xAxis : [
+                {
+                    type : 'category',
+                    axisTick:{show:false},
+                    boundaryGap : false,
+                    axisLabel: {
+                        textStyle:{
+                            color: 'rgba(0,0,0,.6)',
+                            fontSize:'12'
+                        },
+                        lineStyle:{
+                            color:'rgba(255,255,255,.1)',
+                        },
+                        interval: {default: 0},
+                     //   rotate:50,
+                        formatter : function(params){
+                            var newParamsName = "";// 最终拼接成的字符串
+                            var paramsNameNumber = params.length;// 实际标签的个数
+                            var provideNumber = 4;// 每行能显示的字的个数
+                            var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+                            /**
+                             * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+                             */
+                            // 条件等同于rowNumber>1
+                            if (paramsNameNumber > provideNumber) {
+                                /** 循环每一行,p表示行 */
+                                var tempStr = "";
+                                tempStr=params.substring(0,4);
+                                newParamsName = tempStr+"...";// 最终拼成的字符串
+                            } else {
+                                // 将旧标签的值赋给新标签
+                                newParamsName = params;
+                            }
+                            //将最终的字符串返回
+                            return newParamsName
+                        }
+
+                    },
+                    data: ['星期一','星期二 ','星期三 ','星期四','星期五','星期六','星期天']
+                }
+            ],
+            yAxis : {
+				min:300,
+                type : 'value',
+                axisLabel: {
+                    textStyle: {
+                        color: '#696969',
+                        fontSize:'12',
+                    }
+                },
+                axisLine: {
+                    lineStyle:{
+                        color:'rgba(160,160,160,0.2)',
+                    }
+                },
+                splitLine: {
+                    lineStyle:{
+                        color:'rgba(160,160,160,0.2)',
+                    }
+                },
+
+            },
+
+            series : [
+                {
+                    // name:'简易程序案件数',
+					 lineStyle:{
+                        color:'#FF0000',
+                    },
+
+                    type:'line',
+                    areaStyle: {
+
+                        normal: {type: 'default',
+                            color: new echarts.graphic.LinearGradient(0, 0, 0, 0.8, [{
+                                offset: 0,
+                                color: 'rgba(129,197,255,.6)'
+                            }, {
+                                offset: 1,
+                                color: 'rgba(129,197,255,.0)'
+                            }], false)
+                        }
+                    },
+                    smooth:true,
+                    itemStyle: {
+                        normal: {areaStyle: {type: 'default'}}
+                    },
+                    data:{{back_school_num |tojson }}
+                }
+            ]
+        };
+
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
+        window.addEventListener("resize",function(){
+            myChart.resize();
+        });
+    }
+
+
+</script>
+
+
+
+</html>
